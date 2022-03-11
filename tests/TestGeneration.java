@@ -37,28 +37,36 @@ class TestGeneration {
       	//============ root description (List)
     	// les methodes
        	Vector<Method> beh = new Vector<Method>();
+
        	// isEmpty 
        	beh.add(new Method(Keywords.BOOLEAN, "isEmpty", 
-       			Method.NOPARAMETER, "teste si empty ou pas"));
+       			Method.NOPARAMETER, "teste si la liste est vide  ou pas."));
+
        	// length
        	beh.add(new Method(Keywords.INT, "length", 
-       			Method.NOPARAMETER, "Calcule la longueur de la liste"));
+       			Method.NOPARAMETER, "la longueur"));
+
       	// concatenation
       	beh.add(new Method(root, "append", pa, 
-      		"Concatene deux listes"));
+      		"concatenation de deux listes"));
+
      	// to string
       	beh.add(new Method(Keywords.STRING, "toString",
-      			Method.NOPARAMETER, "Conversion en chaine"));
+      			Method.NOPARAMETER, "Conversion."));
+
      	// cons 
       	beh.add(new Concrete(composite, "cons", ps, 
           		"Insertion en tete de liste", 
           		"return new NotEmpty(e, this);"));
+
     	// putlast
       	beh.add(new Method(composite, "putlast", ps, 
       		"Ajout en fin de liste"));
+
     	// reverse
       	beh.add(new Method(root, "reverse", Method.NOPARAMETER, 
       		"Inversion d'une liste"));
+ 
        	// la classe
      	Class list = new Class(root, Class.NOATTRIBUTE, beh, false, "Object");
       	
@@ -69,6 +77,7 @@ class TestGeneration {
      	
      	//================ base description (Empty)
        	Vector<Method> beh1 = new Vector<Method>();
+
        	// isEmpty 
        	beh1.add(new Concrete(Keywords.BOOLEAN, "isEmpty", Method.NOPARAMETER, 
        			"teste si empty ou pas", "return true;"));
@@ -78,6 +87,25 @@ class TestGeneration {
      	// to string
       	beh1.add(new Concrete(Keywords.STRING, "toString", Method.NOPARAMETER, 
           		"Conversion en chaine", "return \"\";"));
+		
+		// append
+		Vector<Parameter> parameters = new Vector<Parameter>();
+		Parameter e=new Parameter(root, "l");
+		parameters.add(e);
+		beh1.add(new Concrete("final "+list,"append", parameters,
+				"concatenation", "return l;"));
+		
+		//reverse 
+		beh1.add(new Concrete("final "+root, "reverse", Method.NOPARAMETER, 
+				"inversion", "return this;"));
+		
+		//putLast
+		Vector<Parameter> parameters1 = new Vector<Parameter>();
+		Parameter e1=new Parameter("final "+Keywords.INT, "e");
+		parameters1.add(e1);
+		beh1.add(new Concrete("final "+base, "putLast", parameters1, 
+				"ajout a la fin.","return new NotEmpty(e, this"));
+
        	// la classe
      	Class empty = new Class(base, Class.NOATTRIBUTE, beh1, true, root);
       	
@@ -90,15 +118,39 @@ class TestGeneration {
        	// les attributs
        	Vector<Attribute> att = new Vector<Attribute>();
        	att.add(new Attribute(root, "tail"));
+
        	// les methodes
        	Vector<Method> beh2 = new Vector<Method>();
+
        	// isEmpty 
        	beh2.add(new Concrete(Keywords.BOOLEAN, "isEmpty", Method.NOPARAMETER, 
        			"teste si empty ou pas", "return false;"));
+
        	// length
        	beh2.add(new Concrete(Keywords.INT, "length", Method.NOPARAMETER, 
     			"Calcule la longueur de la liste", "return 1 + tail.length();"));
-       	// la classe
+		
+		//append
+		Vector<Parameter> parameters2 = new Vector<Parameter>();
+		Parameter e2=new Parameter("final "+root, "l");
+		parameters2.add(e2);
+		beh2.add(new Concrete(root,"append", parameters2,
+				"concatenation purement fonctionnelle.", "return tail.append(l).cons(head);"));
+       	
+		//putLast
+		Vector<Parameter> parameters3 = new Vector<Parameter>();
+		Parameter e3=new Parameter("final "+Keywords.INT, "e");
+		parameters3.add(e3);
+		beh1.add(new Concrete("final "+composite, "putLast", parameters3, 
+				"ajout a la fin.","return tail.putlast(e).cons(head)"));
+		
+		beh1.add(new Concrete("final "+root, "reverse", Method.NOPARAMETER, 
+				"inversion purement fonctionenelle.","return tail.reverse().putLast(head)"));
+		
+		beh1.add(new Concrete("final "+Keywords.STRING, "toString", Method.NOPARAMETER, 
+				"redefinition.","return head+\" \"+ tail.toString()"));
+		
+		// la classe
      	Class notempty = new Class(composite, att, beh2, true, root);
       	
      	// ecriture du fichier

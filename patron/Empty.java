@@ -8,7 +8,6 @@ public class Empty extends List {
 
 	/**
 	 * constructeur des listes vides.
-	 * 
 	 */
 	public Empty() { };
 
@@ -61,5 +60,4 @@ public class Empty extends List {
 	public final String toString() {
 		return "";
 	}
-
 }

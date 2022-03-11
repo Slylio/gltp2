@@ -3,7 +3,7 @@ package input;
 import java.util.Vector;
 
 /**
- * Repr�sentation simplifiee d'une classe.
+ * Représentation simplifiee d'une classe.
  * Elles sont publiques
  *
  */

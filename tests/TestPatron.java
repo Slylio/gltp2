@@ -20,9 +20,8 @@ class TestPatron {
 	l = new NotEmpty(3, new NotEmpty(2, new NotEmpty(1, NULL)));
 	System.out.println("l.isEmpty= " + l.isEmpty());
 	System.out.println("l.length= " + l.length());
-	//
 	System.out.println("l= " + l);	
-	System.out.println("l.reverse= " + l.reverse());	
+	System.out.println("l.reverse= " + l.reverse());
 	System.out.println("l.append(l.reverse())= " + l.append(l.reverse()));	
 
     }
