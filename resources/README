@@ -1,0 +1,17 @@
+%%%% 29/10/2010
+
+Contenu du sujet TP3
+%--------------------
+
+input: representation du patron composite et generation du code
+ les classes sont incompletes
+
+output: repertoire par defaut pour la generation
+
+patron: code du composite list d'entiers
+
+resources: README et diagramme.png
+
+tests: classe de tests
+	TestPatron : test de l'implementation du patron
+	TestGeneration : exemple de generation mais partielle
