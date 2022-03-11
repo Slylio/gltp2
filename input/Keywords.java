@@ -6,7 +6,8 @@ package input;
  *
  */
 public class Keywords {
-
+	/** constante string. */
+	public static final String FINAL ="final ";
 	/** constante string. */
 	public static final String ACCIN = " { ";
 	/** constante string. */

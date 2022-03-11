@@ -1,13 +1,9 @@
 package tests;
 
-import input.Attribute;
+import input.*;
 import input.Class;
-import input.Concrete;
-import input.Keywords;
-import input.Method;
-import input.Parameter;
-import input.Write;
 
+import java.security.Key;
 import java.util.Vector;
 
 /**
@@ -75,36 +71,37 @@ class TestGeneration {
      	g.write();
      	g.close();
      	
+
+		//-------------- auxillaires pour parametres
+		Vector<Parameter> finalPa = new Vector<Parameter>();
+      	pa.add(new Parameter(Keywords.FINAL+root, "l"));
+     	Vector<Parameter> finalPs = new Vector<Parameter>();
+     	ps.add(new Parameter(Keywords.FINAL+Keywords.INT, "e"));
+		// ------------
      	//================ base description (Empty)
        	Vector<Method> beh1 = new Vector<Method>();
 
        	// isEmpty 
-       	beh1.add(new Concrete(Keywords.BOOLEAN, "isEmpty", Method.NOPARAMETER, 
+       	beh1.add(new Concrete(Keywords.FINAL+Keywords.BOOLEAN, "isEmpty", Method.NOPARAMETER, 
        			"teste si empty ou pas", "return true;"));
        	// length
-      	beh1.add(new Concrete(Keywords.INT, "length", Method.NOPARAMETER, 
+      	beh1.add(new Concrete(Keywords.FINAL+Keywords.INT, "length", Method.NOPARAMETER, 
     			"Calcule la longueur de la liste", "return 0;"));
      	// to string
-      	beh1.add(new Concrete(Keywords.STRING, "toString", Method.NOPARAMETER, 
+      	beh1.add(new Concrete(Keywords.FINAL+Keywords.STRING, "toString", Method.NOPARAMETER, 
           		"Conversion en chaine", "return \"\";"));
 		
 		// append
-		Vector<Parameter> parameters = new Vector<Parameter>();
-		Parameter e=new Parameter(root, "l");
-		parameters.add(e);
-		beh1.add(new Concrete("final "+list,"append", parameters,
+		beh1.add(new Concrete(Keywords.FINAL+list,"append",pa,
 				"concatenation", "return l;"));
 		
 		//reverse 
-		beh1.add(new Concrete("final "+root, "reverse", Method.NOPARAMETER, 
+		beh1.add(new Concrete(Keywords.FINAL+root, "reverse", Method.NOPARAMETER, 
 				"inversion", "return this;"));
 		
 		//putLast
-		Vector<Parameter> parameters1 = new Vector<Parameter>();
-		Parameter e1=new Parameter("final "+Keywords.INT, "e");
-		parameters1.add(e1);
-		beh1.add(new Concrete("final "+base, "putLast", parameters1, 
-				"ajout a la fin.","return new NotEmpty(e, this"));
+		beh1.add(new Concrete(Keywords.FINAL+composite, "putLast",finalPs,
+				"ajout a la fin","return new NotEmpty(e,this);") );
 
        	// la classe
      	Class empty = new Class(base, Class.NOATTRIBUTE, beh1, true, root);
@@ -118,36 +115,31 @@ class TestGeneration {
        	// les attributs
        	Vector<Attribute> att = new Vector<Attribute>();
        	att.add(new Attribute(root, "tail"));
+		att.add(new Attribute(root, "head"));
 
        	// les methodes
        	Vector<Method> beh2 = new Vector<Method>();
-
-       	// isEmpty 
-       	beh2.add(new Concrete(Keywords.BOOLEAN, "isEmpty", Method.NOPARAMETER, 
+       	
+		// isEmpty 
+       	beh2.add(new Concrete(Keywords.FINAL+Keywords.BOOLEAN, "isEmpty", Method.NOPARAMETER, 
        			"teste si empty ou pas", "return false;"));
 
        	// length
-       	beh2.add(new Concrete(Keywords.INT, "length", Method.NOPARAMETER, 
+       	beh2.add(new Concrete(Keywords.FINAL+Keywords.INT, "length", Method.NOPARAMETER, 
     			"Calcule la longueur de la liste", "return 1 + tail.length();"));
 		
 		//append
-		Vector<Parameter> parameters2 = new Vector<Parameter>();
-		Parameter e2=new Parameter("final "+root, "l");
-		parameters2.add(e2);
-		beh2.add(new Concrete(root,"append", parameters2,
+		beh2.add(new Concrete(Keywords.FINAL+root,"append",finalPa,
 				"concatenation purement fonctionnelle.", "return tail.append(l).cons(head);"));
        	
 		//putLast
-		Vector<Parameter> parameters3 = new Vector<Parameter>();
-		Parameter e3=new Parameter("final "+Keywords.INT, "e");
-		parameters3.add(e3);
-		beh1.add(new Concrete("final "+composite, "putLast", parameters3, 
+		beh2.add(new Concrete(Keywords.FINAL+composite, "putLast", finalPs, 
 				"ajout a la fin.","return tail.putlast(e).cons(head)"));
 		
-		beh1.add(new Concrete("final "+root, "reverse", Method.NOPARAMETER, 
+		beh2.add(new Concrete(Keywords.FINAL+root, "reverse", Method.NOPARAMETER, 
 				"inversion purement fonctionenelle.","return tail.reverse().putLast(head)"));
 		
-		beh1.add(new Concrete("final "+Keywords.STRING, "toString", Method.NOPARAMETER, 
+		beh2.add(new Concrete(Keywords.FINAL+Keywords.STRING, "toString", Method.NOPARAMETER, 
 				"redefinition.","return head+\" \"+ tail.toString()"));
 		
 		// la classe
